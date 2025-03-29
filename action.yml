@@ -1,5 +1,5 @@
 name: 'DeploySlim'
-description: 'Recursively compress web assets using Brotli and Gzip for lightning-fast deployments in the current working directory by default.'
+description: 'Compress web assets (HTML, CSS, JS, etc.) with Brotli & Gzip in GitHub Actions. Works on Linux/Windows.'
 author: 'CornerstoneCode'  
 
 inputs:
