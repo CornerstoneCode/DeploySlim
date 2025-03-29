@@ -1,66 +1,79 @@
 # DeploySlim
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/github/release/YourUsername/deployslim.svg)](https://GitHub.com/YourUsername/deployslim/releases/)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/YourUsername/deployslim/CI)](https://github.com/YourUsername/deployslim/actions)
-
 **Web asset compression for lightning-fast deployments**
 
-Automatically compress web assets using Brotli and Gzip to minimize file sizes and maximize loading speed. Compatible with any web framework or static site.
+This GitHub Action automatically compresses web assets in your repository using Brotli and Gzip to minimize file sizes and maximize loading speed. Compatible with any web framework or static site.
 
-## 🚀 Getting Started
+## Features
 
-Add this to your GitHub workflow:
+- Multi-algorithm compression (Brotli, Gzip)
+- Smart content-type detection (compresses text-based web assets)
+- Configurable compression levels for both Brotli and Gzip
+- Designed for use in GitHub Actions on Linux and Windows runners
+
+## Usage
+
+To use DeploySlim in your GitHub Actions workflow, add the following step to your `deploy.yml` file (or any other workflow file):
 
 ```yaml
-- name: Compress web assets
-  uses: YourUsername/deployslim@v1
-  with:
-    directory: 'dist'           # Directory containing your build assets
-    compression-level: 'high'   # Options: low, medium, high, extreme
-    generate-report: true       # Generates compression statistics
+name: Deploy with Compression
+
+on: [push] # Or your preferred trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Or windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compress Assets with DeploySlim
+        uses: CornerstoneCode/deploy-slim@v1  
+        with:
+          directory: 'public' # Replace 'public' with the path to your web assets directory
+          algorithms: 'br,gz' # Optional: Specify compression algorithms (default: br,gz)
+          brotli-level: 9     # Optional: Set Brotli compression level (0-11, default: 6)
+          gzip-level: 7       # Optional: Set Gzip compression level (0-9, default: 6)
+
+      # Add your deployment steps below this, for example:
+      # - name: Deploy to hosting
+      #   run: echo "Deploying compressed assets..."
+
+**Note:** Replace `your-github-username/deploy-slim@v1` with the actual path to your action in the GitHub Marketplace once you publish it. Also, adjust the version tag (`@v1`) to the specific version you are using.
+
+## Inputs
+
+The DeploySlim action accepts the following inputs:
+
+| Name           | Description                                                                 | Required | Default   |
+|----------------|-----------------------------------------------------------------------------|----------|-----------|
+| `directory`    | The directory containing the web assets to compress.                        | Yes      |           |
+| `algorithms`   | Comma-separated list of compression algorithms to use (`br`, `gz`).         | No       | `br,gz`   |
+| `brotli-level` | Brotli compression level (an integer between 0 and 11, where 11 is best).   | No       | `6`       |
+| `gzip-level`   | Gzip compression level (an integer between 0 and 9, where 9 is best).       | No       | `6`       |
+
+## Example Workflow
+
+This example workflow demonstrates how to use DeploySlim to compress assets in a `public` directory when code is pushed to the repository:
+
+```yaml
+name: Deploy with Compression
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compress Assets
+        uses: CornerstoneCode/deploy-slim@v1
+        with: 
+          algorithms: 'br' # Only use Brotli compression
+          brotli-level: 11
+ 
 ```
 
-## ⚙️ Configuration Options
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `directory` | Path to your build output directory | `dist` |
-| `compression-level` | Compression intensity | `medium` |
-| `algorithms` | Comma-separated list of algorithms to use | `brotli,gzip` |
-| `extensions` | File extensions to compress | `js,css,html,svg,json` |
-| `exclude` | Files/patterns to exclude from compression | `*.min.js,*.min.css` |
-| `generate-report` | Create a compression report | `false` |
-
-## 📊 Example Report
-
-```
-DeploySlim Compression Report
------------------------------
-Original size: 2,456 KB
-Compressed size: 876 KB
-Reduction: 64.3%
-
-File breakdown:
-main.js: 1,240 KB → 389 KB (68.6%)
-styles.css: 560 KB → 187 KB (66.6%)
-vendor.js: 656 KB → 300 KB (54.3%)
-```
-
-## 🔍 How It Works
-
-DeploySlim analyzes your web assets and applies optimal compression algorithms:
-
-1. Detects file types and selects appropriate compression strategy
-2. Applies Brotli compression at configurable levels
-3. Creates Gzip fallbacks for older browsers
-4. Preserves original files and adds compressed versions
-5. Generates detailed compression statistics
-
-## 🛠️ Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+In this example, only Brotli compression is used at the highest level (11) for the assets in the `public` directory before deploying to GitHub Pages.
