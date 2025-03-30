@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compress Assets with DeploySlim
-        uses: CornerstoneCode/deploy-slim@v1  
+        uses: CornerstoneCode/DeploySlim@v1 
         with: 
           algorithms: 'br,gz' # Optional: Specify compression algorithms (default: br,gz)
           brotli-level: 9     # Optional: Set Brotli compression level (0-11, default: 6)
