@@ -22,7 +22,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'Dockerfile'  # Uses the Dockerfile in the root of your repository
   env:
     INPUT_DIRECTORY: ${{ inputs.directory }}
     INPUT_ALGORITHMS: ${{ inputs.algorithms }}

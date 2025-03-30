@@ -1,15 +1,20 @@
-FROM python:3.10-slim
+# Use an official Python image from Docker Hub
+FROM python:3.9-slim
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the entire src directory into the container
-COPY src /app/src
+# Copy the entire repository (including the 'src' folder) into the container
+COPY . /app
 
-# Install dependencies (brotli is needed, gzip is built-in)
-RUN pip install brotli
+# Install the required Python packages (brotli)
+RUN pip install --no-cache-dir brotli
 
-# Set the working directory to src so the script runs correctly
-WORKDIR /app/src
+# If you have other dependencies, install them as well
+# RUN pip install -r requirements.txt # Uncomment if you have a requirements.txt file
 
-# Run the script when the container starts
-ENTRYPOINT ["python", "main.py"]
+# Set environment variable for Python to prevent buffer issues in logs
+ENV PYTHONUNBUFFERED 1
+
+# Run the Python script when the container is started
+ENTRYPOINT ["python", "src/main.py"]
