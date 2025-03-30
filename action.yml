@@ -1,6 +1,6 @@
 name: 'DeploySlim'
 description: 'Compress web assets (HTML, CSS, JS, etc.) with Brotli & Gzip in GitHub Actions. Works on Linux/Windows.'
-author: 'CornerstoneCode'  
+author: 'CornerstoneCode'
 
 inputs:
   directory:
@@ -21,5 +21,10 @@ inputs:
     default: '6'
 
 runs:
-  using: 'python'
-  main: 'src/main.py'
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    INPUT_DIRECTORY: ${{ inputs.directory }}
+    INPUT_ALGORITHMS: ${{ inputs.algorithms }}
+    INPUT_BROTLI_LEVEL: ${{ inputs.brotli-level }}
+    INPUT_GZIP_LEVEL: ${{ inputs.gzip-level }}
