@@ -42,7 +42,7 @@ jobs:
         with:
           directory: './public' # ⚠️ Replace with the path to your website's build output directory (e.g., public, dist, _site)
           algorithms: 'br,gz' # Optional: Specify compression algorithms (default: br,gz)
-          brotli-level: 9      # Optional: Set Brotli compression level (0-11, default: 6) - Higher level = smaller files, longer processing
-          gzip-level: 7        # Optional: Set Gzip compression level (0-9, default: 6) - Higher level = smaller files, longer processing
+          brotli-level: 9      # Optional: Set Brotli compression level (0-11, default: 11) - Higher level = smaller files, longer processing
+          gzip-level: 7        # Optional: Set Gzip compression level (0-9, default: 9) - Higher level = smaller files, longer processing
 
       # ... Your website deployment steps (e.g., deploying to Netlify, Vercel, AWS S3) ...
