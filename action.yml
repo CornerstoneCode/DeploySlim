@@ -12,13 +12,13 @@ inputs:
     required: false
     default: 'br,gz'
   brotli-level:
-    description: 'Brotli compression level (0-11). Default: 6'
+    description: 'Brotli compression level (0-11). Default: 11'
     required: false
-    default: '6'
+    default: '11'
   gzip-level:
-    description: 'Gzip compression level (0-9). Default: 6'
+    description: 'Gzip compression level (0-9). Default: 9'
     required: false
-    default: '6'
+    default: '9'
 
 runs:
   using: 'composite'
