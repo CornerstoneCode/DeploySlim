@@ -1,10 +1,13 @@
 name: 'DeploySlim'
-description: 'Compress web assets (HTML, CSS, JS, etc.) with Brotli & Gzip in GitHub Actions.'
+description: 'Optimize and compress web assets (HTML, CSS, JS, images) with Brotli, Gzip, minification, and image optimization for blazing-fast static websites.'
 author: 'CornerstoneCode'
+branding:
+  icon: 'package'  # Choose an icon from https://feathericons.com/
+  color: 'blue'    # Choose a color (e.g., blue, green, purple)
 
 inputs:
   directory:
-    description: 'The directory containing the web assets to compress.'
+    description: 'The directory containing the web assets to process.'
     required: false
     default: '.'
   algorithms:
@@ -19,26 +22,47 @@ inputs:
     description: 'Gzip compression level (0-9). Default: 9'
     required: false
     default: '9'
+  minify:
+    description: 'Enable minification of HTML, CSS, and JS files. Default: true'
+    required: false
+    default: 'true'
+  optimize-images:
+    description: 'Enable image optimization for PNG, JPG, and WebP files. Default: true'
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
   steps:
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v3
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.12'
+
+    - name: Cache Python dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/action.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
     - name: Install Python dependencies
       run: |
+        set -e
         python -m pip install --upgrade pip
-        pip install brotli
+        pip install brotli minify-html csscompressor jsmin Pillow
       shell: bash
 
-    - name: Run compression script
-      run: python main.py
+    - name: Run optimization and compression script
+      run: |
+        set -e
+        python main.py
       shell: bash
       env:
         INPUT_DIRECTORY: ${{ inputs.directory }}
         INPUT_ALGORITHMS: ${{ inputs.algorithms }}
         INPUT_BROTLI_LEVEL: ${{ inputs.brotli-level }}
         INPUT_GZIP_LEVEL: ${{ inputs.gzip-level }}
+        INPUT_MINIFY: ${{ inputs.minify }}
+        INPUT_OPTIMIZE_IMAGES: ${{ inputs.optimize-images }}
