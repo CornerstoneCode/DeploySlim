@@ -51,7 +51,7 @@ runs:
       run: |
         set -e
         python -m pip install --upgrade pip
-        pip install brotli minify-html csscompressor jsmin Pillow
+        pip install brotli minify_html csscompressor jsmin Pillow
       shell: bash
 
     - name: Run optimization and compression script
